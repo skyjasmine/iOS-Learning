@@ -45,8 +45,7 @@ int main(int argc, const char * argv[]) {
 
 执行结果：
 
-https://github.com/skyjasmine/iOS-/blob/master/images/1.png
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/1.png)
 可以看出实现了自定义对象的深拷贝。
 
 （2）copy的默认行为：赋值给带有copy修饰的属性时，不保留新值，而是将重新拷贝一份对象在堆中。并且拷贝后返回的对象是一个**不可变对象**。
@@ -57,7 +56,7 @@ https://github.com/skyjasmine/iOS-/blob/master/images/1.png
 
 2️⃣在对象dealloc时，可以使用weak指针指向对象吗？
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613170743561.png" alt="image-20200613170743561" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/2.png)
 
 可以。weak指针不会增加对象的引用计数，当weak指向的对象被释放时，nil将赋值给weak所指的内存。
 
@@ -141,7 +140,7 @@ typedef void(^blk_t) (void);
 
 执行结果如下：
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613172627906.png" alt="image-20200613172627906" style="zoom: 50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/3.png)
 
 可以看出**dealloc方法没有被调用**。因为MyObject类对象持有Block对象blk_的强引用，而init实例方法中执行的Block语法使用了self。由于Block语法赋值在成员变量blk中，因此通过Block语法生成在栈上的Block此时由栈复制到堆，并持有self。此时发生了循环引用。
 
@@ -159,7 +158,7 @@ typedef void(^blk_t) (void);
 
 修改后执行结果：
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613174213162.png" alt="image-20200613174213162" style="zoom: 50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/4.png)
 
 可见能够正确dealloc。
 
@@ -242,7 +241,7 @@ int main(int argc, const char * argv[]) {
 
 执行结果如下：
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613194849585.png" alt="image-20200613194849585" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/5.png)
 
 可以看出s1对象可以直接调用主类和分类中的所有方法。
 
@@ -295,7 +294,7 @@ int main(int argc, const char * argv[]) {
 
 执行结果如下：
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613195324057.png" alt="image-20200613195324057" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/6.png)
 
 可以看出为NSString添加类别后，所有的NSString对象都可以调用类别中的方法。
 
@@ -352,11 +351,11 @@ int main(int argc, const char * argv[]) {
 
 执行结果如下：
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613201407804.png" alt="image-20200613201407804" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/7.png)
 
 一开始我没有注意延展中成员只能类内访问，试图在main中通过Student对象调用study方法，会出现如下错误提示：
 
-![image-20200613201520470](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613201520470.png)
+![](https://github.com/skyjasmine/iOS-/blob/master/images/8.png)
 
 ## 3.Operation Queue
 
@@ -420,8 +419,7 @@ NSOperation是抽象类，不能用来封装操作，只能使用其子类封装
 
 执行结果如下：
 
-![image-20200611212314044](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200611212314044.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/9.png)
 可以看出不使用NSOperationQueue，主线程中单独使用子类NSInvocationOperation时，操作就**在当前线程执行**，没有开启新线程。
 
 2️⃣使用子类NSBlockOperation
@@ -449,8 +447,7 @@ NSOperation是抽象类，不能用来封装操作，只能使用其子类封装
 
 执行结果如下：
 
-![image-20200612093243658](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612093243658.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/10.png)
 可以看出不使用NSOperationQueue，主线程中单独使用子类NSBlockOperation时，操作就**在当前线程执行**，没有开启新线程。
 
 NSBlockOperation还提供了方法**addExecutionBlock:**，可以为NSBlockOperation添加额外操作。这些操作（包括b lockOperationWithBlock中的操作），可以在不同线程并发执行。只有当所有操作都完成执行时，才看作完成.
@@ -515,8 +512,7 @@ NSBlockOperation还提供了方法**addExecutionBlock:**，可以为NSBlockOpera
 
 执行结果如下：
 
-![image-20200612093948888](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612093948888.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/11.png)
 可见使用子类**NSBlockOperation**并调用方法**addExecutionBlock:**时，**blockOperationWithBlock:**中的操作和**addExecutionBlock:**添加的操作在不同线程中并发执行。并且**blockOperationWithBlock:**方法中的操作也不一定会在当前线程中执行。（这是博客中看到的结论，我自己做了几次blockOperationWithBlock:中的操作都是在main中执行😭）
 
 如果一个NSBlockOperation对象封装了多个操作，是否开启新线程由操作个数决定，当操作个数较多时，就会自动开启新线程，线程个数由系统决定。
@@ -559,8 +555,7 @@ NSBlockOperation还提供了方法**addExecutionBlock:**，可以为NSBlockOpera
 
 执行结果如下：
 
-![image-20200612101219354](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612101219354.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/12.png)
 可以看出不使用NSOperationQueue，主线程中单独使用自定义子类时，操作就**在当前线程执行**，没有开启新线程。
 
 #### 3.2.1 创建Operation Queue
@@ -630,8 +625,7 @@ NSOperationQueue *queue = [[NSOperationQueue alloc]init];
 
 执行结果如下：
 
-![image-20200612110344481](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612110344481.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/13.png)
 可以看出使用NSOperation子类创建操作，并使用**addOperation:**将操作加入队列后，系统**开启新线程，并发执行**。
 
 2️⃣直接在Block中添加操作，然后将Block加入队列
@@ -674,8 +668,7 @@ NSOperationQueue *queue = [[NSOperationQueue alloc]init];
 
 执行结果如下：
 
-![image-20200612111805515](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612111805515.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/14.png)
 可以看出使用**addOperationWithBlock:**将操作加入队列后，系统同样会**开启新线程，并发执行**。
 
 #### 3.2.4 NSOperationQueue控制串行执行、并发执行
@@ -738,12 +731,10 @@ NSOperationQueue有一个属性**maxConcurrentOperationCount**，可以控制一
 
 maxConcurrentOperationCount=1时，执行结果如下：
 
-![image-20200612144006021](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612144006021.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/15.png)
 maxConcurrentOperationCount=2时，执行结果如下：
 
-![image-20200612144819447](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612144819447.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/16.png)
 从两个执行结果中，可以看出最大并发操作数为1时，操作按照顺序串行执行，并且所有操作在两个线程中完成；最大并发操作数为2时，操作是并发执行的，可以同时执行两个操作。开启多少线程是由系统决定的。
 
 ### 3.3 NSOperation操作依赖
@@ -789,8 +780,7 @@ NSOperation、NSOperationQueue能够添加操作之间的依赖关系。通过�
 
 执行结果如下：
 
-![image-20200612153614935](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200612153614935.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/17.png)
 可以看出添加依赖后，能够实现让op1在op2之前执行。
 
 ### 3.4 线程间通信
@@ -829,12 +819,12 @@ iOS开发中，通常在主线程中进行UI刷新，如：点击、滚动、拖
 }
 ```
 
-如果后台线程中操作执行间隔为2s时，执行结果如下：![image-20200613095045403](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613095045403.png)
+如果后台线程中操作执行间隔为2s时，执行结果如下：
+![](https://github.com/skyjasmine/iOS-/blob/master/images/18.png)
 
 如果后台线程中相邻操作没有执行间隔时，执行结果如下：
 
-![image-20200613100223664](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613100223664.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/19.png)
 从上述两张截图中可以看出，如果后台线程操作无延时，那么执行完所有操作才会返回主线程；如果两个操作间有延时，那么执行完当前操作后，立刻就回到主线程，然后再回后台线程执行操作。
 
 ### 3.5 线程安全
@@ -911,8 +901,7 @@ iOS开发中，通常在主线程中进行UI刷新，如：点击、滚动、拖
 
 执行结果如下：
 
-![image-20200613112859953](/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613112859953.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/20.png)
 从结果可以看出，使用NSLock加锁、解锁得到正确的票数，解决了线程安全问题。
 
 ### 3.6 NSOperation、NSOperationQueue常用方法
