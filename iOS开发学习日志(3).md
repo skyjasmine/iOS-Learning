@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
 
 执行结果：
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200613162255492.png" alt="image-20200613162255492" style="zoom: 67%;" />
+https://github.com/skyjasmine/iOS-/blob/master/images/1.png
 
 可以看出实现了自定义对象的深拷贝。
 
