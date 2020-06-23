@@ -58,7 +58,7 @@ int main(int argc, const char * argv[]) {
 }
 ```
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200621191249544.png" alt="image-20200621191249544" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/1.png)
 
 从上面的执行结果可以看出，Dog类遵守协议MyProtocol，并在Dog.m中实现了协议中的方法，然后在mian程序中Dog类对象就可以调用协议中的这些方法了。
 
@@ -97,7 +97,7 @@ int main(int argc, const char * argv[]) {
 
 在Foundation框架中，有一个类NSObject，是OC所有类的基类。Foundation框架中同样存在一个协议，也叫做NSOject。
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200609165034741.png" alt="image-20200609165034741"  />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/2.png)
 
 NSObject协议被NSObject类遵守，所以NSObject协议中的所有方法，全部的OC类都拥有了。即：所有的类都遵守的NSObject协议。==NSObject协议叫做基协议==。
 
@@ -210,7 +210,7 @@ int main(int argc, const char * argv[]) {
 }
 ```
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果4/3.png" alt="image-20200621212654197" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/3.png)
 
 从以上代码可以看出代理模式的好处，如果此时又多了一个人照顾👶：妈妈类，那么只要让妈妈类实现ChildrenDelegate协议即可。因此实现了被委托对象和委托对象之间的解藕，具有很高的扩展性。
 
@@ -341,7 +341,7 @@ dispatch_group_notify(group, dispatch_get_main_queue(), ^{NSLog(@"done");});
 
 执行结果如下：
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果4/4.png" alt="image-20200620212138941" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/4.png)
 
 Global Dispatch Queue中的几个处理是并行执行的，所以最后打印的顺序不定。而执行结束处理的done一定是最后输出的。
 
@@ -406,7 +406,7 @@ dispatch_async(queue, ^{NSLog(@"blk7-------reading");});
 
 执行结果如下：
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果4/5.png" alt="image-20200621155028388" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/5.png)
 
 可以发现dispatch_barrier_async函数会等到追加到Concurrent Dispatch Queue的并行执行的读取处理都结束后，才将写入处理追加到队列中。
 
@@ -416,7 +416,7 @@ dispatch_async(queue, ^{NSLog(@"blk7-------reading");});
 
 系统还提供了dispatch_sync函数，其中"==sync=="表示"==同步==(synchronous)"，就是将指定的Block“同步”地追加到指定的Dispatch Queue中。在追加的Block执行结束之前，函数会一直等待。
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果4/6.png" alt="image-20200621163439706" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/6.png)
 
 1️⃣使用dispatch_async函数追加处理到Concurrent Dispatch Queue中，异步+并行
 
@@ -453,7 +453,7 @@ dispatch_async(queue, ^{NSLog(@"blk7-------reading");});
 }
 ```
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果4/7.png" alt="image-20200621161710201" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/7.png)
 
 从执行结果可以看出，使用**dispatch_async追加处理到Concurrent Dispatch Queue中，开启多条线程，并且执行顺序不定。**
 
@@ -492,7 +492,7 @@ dispatch_async(queue, ^{NSLog(@"blk7-------reading");});
 }
 ```
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果4/8.png" alt="image-20200621162122617" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志4)/8.png)
 
 从执行结果可以看出，使用**dispatch_sync追加处理到Concurrent Dispatch Queue中，只会开启一条线程，并且按照追加顺序执行处理。**
 
