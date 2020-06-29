@@ -56,10 +56,7 @@ int main(int argc, const char * argv[]) {
 
 2️⃣在对象dealloc时，可以使用weak指针指向对象吗？
 
-![](https://github.com/skyjasmine/iOS-/blob/master/images/2.png)
-
-可以。weak指针不会增加对象的引用计数，当weak指向的对象被释放时，nil将赋值给weak所指的内存。
-
+不可以，dealloc时使用__weak指向自己，会发生闪退。
 ### 1.2 load & initialize
 
 1️⃣load和initialize的标准写法
