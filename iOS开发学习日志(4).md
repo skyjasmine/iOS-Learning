@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 ```
-**更新：一般delegate都是使用weak来修饰，以避免一些不必要的循环引用。 **
+**更新：一般delegate都是使用weak来修饰，以避免一些不必要的循环引用**。 
 上面代码中我们定义了一个协议：ChildrenDelegate，其中含有两个必要方法：wash和play。
 
 还定义了一个非常重要的属性delegate，因为id是不确定类型，所以__delegate可以被赋值为的类型是：**只要实现了ChildrenDelegate协议的类就可以**。格式为id<协议名>。
