@@ -72,10 +72,9 @@ struct objc_class {
 
 实例对象是一个结构体，该结构体只有一个成员变量，指向构造它的类对象，这个类对象中存储了一切实例对象需要的信息，类对象是通过元类创建的。
 
-<img src="/Users/dingtalk/Library/Application Support/typora-user-images/image-20200702173329142.png" alt="image-20200702173329142" style="zoom:50%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/1.png)
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/2.png" alt="image-20200623200149375" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/2.png)
 **==综上，当调用一个方法时，运行过程大致如下：==**
 
 1️⃣Runtime会把方法调用转化为消息发送，即obj_msgSend，并把**方法的调用者**和**方法选择器**当作参数传递过去；
@@ -158,8 +157,7 @@ int main(int argc, const char * argv[]) {
 
 ```
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/3.png" alt="image-20200623212940897" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/3.png)
 main函数中创建了一个Person的实例对象，⚠️注意一定要用**id**类型声明，否则编译期就会报错，因为找不到相关函数声明。而id类型由于可以指向任意类对象，所以编译时找到NSString类的appendString: 方法就不会报错。
 
 Person类没有声明和定义appendString: 方法，运行时应该报错：unrecognized selector，但是运行的结果发现实际上并没有报错，这是因为在Person.m文件中重写了类方法 + (BOOL)resolveInstanceMethod:(SEL)name 。
@@ -184,8 +182,7 @@ Person类没有声明和定义appendString: 方法，运行时应该报错：unr
 
 调用这个方法如果不能处理就会调用父类的相关方法，一直到NSObject的这个方法，如果此时也无法处理就会抛出异常。
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/4.png" alt="image-20200624211343129" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/4.png)
 
 
 ### 1.3 OC的属性property
@@ -293,8 +290,7 @@ class_copyPropertyList(Class _Nullable cls, unsigned int * _Nullable outCount)
 
 class_copyPropertyList的第一个参数是相关类的类对象，第二个参数指明property的数量。通过该方法能够获取所有属性，然后通过**property_getName**和**property_getAttributes**方法获取某个属性的name和attributes值，上面main函数的输出结果如下：
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/5.png" alt="image-20200625203439313" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/5.png)
 可以看出结果与之前通过clang转写后得到的属性完全一致。
 
 ### 1.4 Category的实现原理
@@ -797,8 +793,7 @@ int main(int argc, const char * argv[]) {
 
 上述代码执行结果如下：
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/6.png" alt="image-20200630195113060" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/6.png)
 #### 1.5.2 Method swizzling
 
 Method swizzling用于改变一个已经存在的selector的实现，使得能够在运行时通过改变selector在类的消息分发列表中的映射从而改变方法的调用。
@@ -828,8 +823,7 @@ int main(int argc, const char * argv[]) {
 }
 ```
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/7.png" alt="image-20200630203337507" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/7.png)
 从运行结果可以看出两个实例方法的具体实现被交换了。上面的代码使用了函数**method_exchangeImplementations**：
 
 ```objective-c
@@ -853,12 +847,10 @@ OBJC_EXPORT void method_exchangeImplementations(Method m1, Method m2)
 
 该函数用于交换两个方法的实现，也就是**struct objc_selector**中的函数指针**_imp**被交换了。交换前selector和imp的对应关系如下：
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/8.png" alt="image-20200630204359845" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/8.png)
 交换后，selector和imp的对应关系则变为：
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/images(日志5)/9.png" alt="image-20200630204634088" style="zoom:50%;" />
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志5)/9.png)
 在实际应用中，可能会出现以下需求：我们想在一款iOS app中追踪每一个视图控制器被用户呈现了几次：可以通过在每个视图控制器的**viewDidAppear:**中添加追踪代码实现，但是这样会大量重复样板代码；也可以通过继承实现，但是这样又需要继承UIViewController、UITableViewController、UINavigationController等，这样也会比较繁琐。
 
 经过这一节的学习，我们可以使用类别category来实现method swizzling.
