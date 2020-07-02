@@ -123,6 +123,7 @@ NSObject<StudyProtocol> *obj1 = [Student new];
 ```
 
 用处在于：当我要调用对象中的协议方法时，可以通过是否有警告来推断类是否遵守了协议。只有遵守了该协议，才能拥有协议方法。
+更新：在对协议方法调用时（特别是optional），一般都会用**responseToSelector:**来判断对象是否真正实现了这个方法。
 
 ### 1.6 代理模式
 
@@ -149,14 +150,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Children:NSObject
 //Children的代理对象delegate
-@property (nonatomic,strong) id<ChildrenDelegate> delegate;
+@property (nonatomic,weak) id<ChildrenDelegate> delegate;    //20200702update
 
 @end
 ```
-
+**更新：一般delegate都是使用weak来修饰，以避免一些不必要的循环引用。 **
 上面代码中我们定义了一个协议：ChildrenDelegate，其中含有两个必要方法：wash和play。
 
-还定义了一个非常重要的属性delegate，因为id是不确定类型，所以__delegate可以被赋值为的类型是：**只要实现了ChildrenDelegate协议的类就可以**。格式为==id<协议名>==。
+还定义了一个非常重要的属性delegate，因为id是不确定类型，所以__delegate可以被赋值为的类型是：**只要实现了ChildrenDelegate协议的类就可以**。格式为id<协议名>。
 
 ```objective-c
 //-----------------------Children.m----------------------------
@@ -496,7 +497,7 @@ dispatch_async(queue, ^{NSLog(@"blk7-------reading");});
 
 从执行结果可以看出，使用**dispatch_sync追加处理到Concurrent Dispatch Queue中，只会开启一条线程，并且按照追加顺序执行处理。**
 
-⚠️iOS中不能使用dispatch_sync(dispatch_get_main_queue(),blk)，会发生死锁。因此使用dispatch_sync时一定要谨慎。
+⚠️20200702更新：iOS中中使用dispatch_sync(dispatch_get_main_queue(),blk)未必发生死锁，要看在什么线程中执行这个语句。在主线程中调用dispatch_sync要注意可能会被子线程阻塞，导致用户界面卡顿。
 
 ### 2.8 Dispatch Semaphore(信号量)
 
