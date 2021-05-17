@@ -159,7 +159,7 @@ AFNetworking底层封装了NSURLSession。可以将NSURLSession类理解为七�
 
 ### 2. NSURLSessionTask
 
-![image-20201107104405446](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201107104405446.png)
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201107104405446.png)
 
 * NSURLSessionDataTask：处理一般网络请求，GET|POST请求等；
 * NSURLSessionUploadTask：处理上传请求
