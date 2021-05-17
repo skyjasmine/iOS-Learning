@@ -181,19 +181,18 @@ AFNetworking底层封装了NSURLSession。可以将NSURLSession类理解为七�
 
   测试中出现了访问失败的情况：在访问https://www.baidu.com时，出现错误：
 
-  ![image-20201024112335432](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201024112335432.png)
+  ![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201024112335432.png)
 
   根据网上查找的两种方案：
 
   （1）在AFHTTPResponseSerializer实现中将acceptableContentTypes按如下方式修改，仍然没有解决问题😿。
 
-![image-20201024114350183](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201024114350183.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201024114350183.png)
 （2）然后我在main.m中按照下面的方式修改：
 
-运行结果：![image-20201024113630611](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201024113630611.png)
+运行结果：![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201024113630611.png)
 
-<img src="/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201024113704451.png" alt="image-20201024113704451" style="zoom:150%;" />
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201024113704451.png)
 
 疑问：改变的都是AFHTTPResponseSerializer类的acceptableContentTypes属性，为什么前者不能解决问题，后者可以？
 
@@ -201,19 +200,18 @@ AFNetworking底层封装了NSURLSession。可以将NSURLSession类理解为七�
 
 针对这个问题，我通过debug的方式观察了AFHTTPSessionManager的初始化过程，init函数中默认manager的responseSerializer是AFJSONResponseSerializer对象，而请求百度首页返回的是html网页，并非json文本。如果修改AFHTTPResponseSerializer中acceptaleContentTypes，该属性将会被AFJSONResponseSerializer的acceptaleContentTypes覆盖，依旧不能接收html。
 
-![image-20201107173027454](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201107173027454.png)
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201024113704451.png)
 
 那如果将AFJSONResponseSerializer的acceptaleContentTypes也添加上html类型，那么则会出现如下问题：
 
-![image-20201107192230622](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201107192230622.png)
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201107192230622.png)
 
 因为返回的根本不是JSON文本，而是html网页，所以无法按照JSON的方式解析。于是在发送请求前将manager的responseSerializer修改为AFHTTPResponseSerializer 对象，然后在该类的acceptaleContentTypes也添加上html类型，就能正确解析出html。
 
-![image-20201107173323832](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201107173323832.png)
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201107173323832.png)
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/image-20201107192607963.png)
 
-
-
-### ![image-20201107192607963](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/image-20201107192607963.png)2. 底层原理
+### 2. 底层原理
 
 参考：https://blog.csdn.net/Forever_wj/article/details/108402416
 
@@ -230,12 +228,10 @@ AFNetworking中主要涉及的类有AFURLSessionManager、AFHTTPSessionManager�
 
 * 创建sessionManager：[AFHTTPSessionManager manager]
 
-![sessionManagerInit](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/sessionManagerInit.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/sessionManagerInit.png)
 从上面流程中可以 看出初始化manager的过程中主要进行了session设置、RequestSerializer和RequestSerializer的初始化。
 
 * 与服务器通信： [manager GET:parameters:headers:progress:success:failure:]
 
-  ![CommunicationWithServer](/Users/dingtalk/Desktop/zl学习文件/iOS开发日志/测试结果6/CommunicationWithServer.png)
-
+![](https://github.com/skyjasmine/iOS-/blob/master/images/images(日志6)/CommunicationWithServer.png)
 AFHTTPSessionManager在创建GET、POST等请求时，过程基本如上图，方法内部会创建一个task对象，并调用 addDelegateForDataTask 将后面的处理交给 AFURLSessionManagerTaskDelegate 来完成。
